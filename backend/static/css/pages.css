@@ -1,0 +1,572 @@
+/* =========================================================================
+   Стили внутренних страниц: новости, события, локации.
+   Дополняют style.css и используют ту же палитру и шрифты.
+   ========================================================================= */
+
+/* ---- заголовок страницы ---- */
+
+.page-head {
+    background: #e7e1d4;
+    box-shadow: inset 0 45px 35px -20px rgba(0, 0, 0, 0.18);
+    padding: 42px 40px 30px;
+}
+
+.page-head-inner {
+    max-width: 1500px;
+    margin: 0 auto;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+.page-title {
+    font-family: 'Open Sans', sans-serif;
+    font-size: clamp(30px, 4vw, 52px);
+    font-weight: 700;
+    line-height: 1.15;
+    color: #2b2b2b;
+    margin: 0;
+}
+
+.breadcrumbs {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: #6b6355;
+}
+
+.breadcrumbs a {
+    color: #731C1E;
+    text-decoration: none;
+}
+
+.breadcrumbs a:hover {
+    text-decoration: underline;
+}
+
+/* ---- контейнер страницы ---- */
+
+.page-wrap {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 40px 40px 80px;
+}
+
+.page-wrap--narrow {
+    max-width: 980px;
+}
+
+.page-intro {
+    font-family: 'Inter', sans-serif;
+    font-size: 17px;
+    line-height: 1.6;
+    color: #4a443b;
+    max-width: 780px;
+    margin-bottom: 36px;
+}
+
+/* ---- карточки: убираем жёсткие размеры из макета, чтобы текст из БД помещался ---- */
+
+.info-card {
+    align-items: stretch;
+}
+
+.card-image {
+    display: block;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 2px;
+}
+
+.card-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.card-content h3 {
+    width: auto;
+    height: auto;
+    font-size: clamp(20px, 2.1vw, 34px);
+    line-height: 1.2;
+    margin-bottom: 10px;
+    overflow-wrap: anywhere;
+}
+
+.card-content p {
+    width: auto;
+    height: auto;
+    font-size: clamp(15px, 1.25vw, 20px);
+    font-weight: 400;
+    line-height: 1.5;
+    color: #3a352e;
+    margin-bottom: 12px;
+}
+
+.card-content .card-date {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: #8a8172;
+    margin-bottom: 8px;
+}
+
+.btn-details {
+    width: auto;
+    min-width: 170px;
+    height: auto;
+    padding: 12px 24px;
+    font-size: 18px;
+    line-height: 1.2;
+    border-radius: 7px;
+}
+
+.btn-archive {
+    width: auto;
+    min-width: 200px;
+    font-size: 22px;
+    line-height: 1.2;
+}
+
+/* ссылки-карточки локаций */
+a.location-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
+a.location-card:hover .location-name {
+    color: #731C1E;
+}
+
+/* ---- сетка карточек событий/новостей: одна карточка в ряд на узких экранах ---- */
+
+.cards-grid {
+    column-gap: 3.5%;
+    row-gap: 40px;
+}
+
+/* ---- пустое состояние ---- */
+
+.empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    color: #6b6355;
+    padding: 60px 20px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 12px;
+}
+
+/* ---- постраничная навигация ---- */
+
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    margin-top: 55px;
+    flex-wrap: wrap;
+}
+
+.pagination a,
+.pagination span {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 7px;
+}
+
+.pagination a {
+    background: #731C1E;
+    color: #fff;
+    transition: background 0.25s ease;
+}
+
+.pagination a:hover {
+    background: #5c1414;
+}
+
+.pagination .pagination-info {
+    color: #6b6355;
+    padding: 10px 0;
+}
+
+/* ---- страница новости / события ---- */
+
+.article {
+    background: rgba(255, 255, 255, 0.78);
+    border: 1px solid rgba(43, 38, 32, 0.08);
+    border-radius: 16px;
+    padding: 40px 46px;
+}
+
+.article-head {
+    margin-bottom: 24px;
+}
+
+.article-date {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    color: #8a8172;
+    margin-bottom: 10px;
+}
+
+.article-title {
+    font-family: 'Open Sans', sans-serif;
+    font-size: clamp(26px, 3vw, 42px);
+    font-weight: 700;
+    line-height: 1.2;
+    color: #2b2b2b;
+    margin: 0;
+}
+
+.article-photo {
+    margin: 26px 0;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.article-photo img {
+    width: 100%;
+    max-height: 520px;
+    object-fit: cover;
+    display: block;
+}
+
+.article-lead {
+    font-size: 20px;
+    line-height: 1.55;
+    color: #4a443b;
+    margin-bottom: 22px;
+    padding-left: 18px;
+    border-left: 3px solid #b2945e;
+}
+
+/* содержимое CKEditor */
+.article-body {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+    line-height: 1.7;
+    color: #2b2620;
+    overflow-wrap: anywhere;
+}
+
+.article-body p {
+    margin-bottom: 16px;
+}
+
+.article-body h2,
+.article-body h3 {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 700;
+    line-height: 1.25;
+    margin: 28px 0 12px;
+}
+
+.article-body h2 { font-size: 28px; }
+.article-body h3 { font-size: 22px; }
+
+.article-body ul,
+.article-body ol {
+    margin: 0 0 16px 24px;
+}
+
+.article-body li {
+    margin-bottom: 8px;
+}
+
+.article-body a {
+    color: #731C1E;
+}
+
+.article-body img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.article-body blockquote {
+    margin: 22px 0;
+    padding: 14px 22px;
+    border-left: 3px solid #b2945e;
+    background: rgba(178, 148, 94, 0.1);
+    font-style: italic;
+}
+
+.article-body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 18px;
+}
+
+.article-body th,
+.article-body td {
+    border: 1px solid rgba(43, 38, 32, 0.15);
+    padding: 10px 12px;
+    text-align: left;
+}
+
+.article-footer {
+    margin-top: 32px;
+    padding-top: 22px;
+    border-top: 1px solid rgba(43, 38, 32, 0.1);
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    color: #731C1E;
+    text-decoration: none;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+/* ---- событие: карточка с датой и площадкой ---- */
+
+.event-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 26px;
+    margin-bottom: 18px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    color: #4a443b;
+}
+
+.event-meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.event-meta-item svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    stroke: #731C1E;
+    fill: none;
+    stroke-width: 1.8;
+}
+
+.event-badge {
+    display: inline-block;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: rgba(178, 148, 94, 0.22);
+    color: #6b5a3a;
+    margin-bottom: 12px;
+}
+
+.event-badge--past {
+    background: rgba(43, 38, 32, 0.08);
+    color: #6b6355;
+}
+
+/* ---- блок «смотрите также» ---- */
+
+.related {
+    margin-top: 60px;
+}
+
+.related h2 {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 30px;
+    font-weight: 700;
+    color: #2b2b2b;
+    margin-bottom: 26px;
+}
+
+/* ---- страница локации ---- */
+
+.location-hero {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 40px;
+    align-items: start;
+    margin-bottom: 44px;
+}
+
+.location-hero-photo {
+    border-radius: 14px;
+    overflow: hidden;
+    background: #e2dccd;
+}
+
+.location-hero-photo img {
+    width: 100%;
+    height: 100%;
+    max-height: 460px;
+    object-fit: cover;
+    display: block;
+}
+
+.info-list {
+    list-style: none;
+    margin: 0 0 26px;
+    padding: 0;
+}
+
+.info-list li {
+    display: flex;
+    gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(43, 38, 32, 0.08);
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    color: #2b2620;
+    line-height: 1.5;
+}
+
+.info-list .info-label {
+    flex-shrink: 0;
+    width: 150px;
+    color: #8a8172;
+}
+
+.info-list .info-value {
+    flex: 1;
+    min-width: 0;
+}
+
+.section-title {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: #2b2b2b;
+    margin: 40px 0 20px;
+}
+
+/* ---- адаптив ---- */
+
+@media (max-width: 1100px) {
+    .page-wrap { padding: 30px 24px 60px; }
+    .article { padding: 30px 26px; }
+    .location-hero { grid-template-columns: 1fr; gap: 26px; }
+}
+
+@media (max-width: 1000px) {
+    .cards-grid {
+        column-gap: 0;
+    }
+}
+
+@media (max-width: 700px) {
+    .page-head { padding: 28px 20px 22px; }
+    .page-wrap { padding: 24px 18px 50px; }
+    .article { padding: 22px 18px; }
+    .info-card {
+        flex-direction: column;
+    }
+    .card-image {
+        width: 100%;
+        aspect-ratio: 16 / 10;
+    }
+    .btn-details { width: 100%; }
+    .info-list .info-label { width: auto; }
+    .info-list li { flex-direction: column; gap: 4px; }
+}
+
+/* название локации в блоке «Контакти» стало ссылкой */
+.venue-name a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.venue-name a:hover {
+    color: #731C1E;
+}
+
+/* ===================== ДОПОЛНЕНИЯ ДЛЯ НОВЫХ СТРАНИЦ ===================== */
+
+/* В макете у этих страниц нет горизонтальных отступов и ограничения ширины —
+   контент прилипал к краю экрана. Добавляем общий контейнер. */
+/* 'body' в селекторе нужен, чтобы перебить правило из history.css /
+   exhibit.css / procurement.css: те файлы подключаются после pages.css
+   и сбрасывают горизонтальные отступы через padding: ... 0 ... */
+body main.history,
+body main.exhibit,
+body main.procurement {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+/* «Ціна квитків» на странице «Про музей»: цены приходят из CKEditor,
+   поэтому стилизуем обычный текст, а не фиксированный список из макета. */
+.tickets-body {
+    color: #000;
+    font-family: "Open Sans", sans-serif;
+    font-size: clamp(17px, 1.5vw, 24px);
+    line-height: 1.7;
+}
+
+.tickets-body p {
+    margin-bottom: 10px;
+}
+
+.tickets-body ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.tickets-body li {
+    margin-bottom: 10px;
+}
+
+/* Кнопки годов в «Державних закупівлях» стали ссылками */
+a.proc-year-btn {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+/* Ссылка «назад» на странице истории */
+.history-back {
+    margin-top: 40px;
+    text-align: center;
+}
+
+/* Вступний текст на странице «Про музей» */
+.about-intro {
+    max-width: 1000px;
+    margin: 40px auto 0;
+}
+
+@media (max-width: 1000px) {
+    body main.history,
+    body main.exhibit,
+    body main.procurement {
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+}
+
+@media (max-width: 700px) {
+    body main.history,
+    body main.exhibit,
+    body main.procurement {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+}

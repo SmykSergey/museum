@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}{% trans 'Новини' %} – {% trans 'Одеський історико-краєзнавчий музей' %}{% endblock %}
+{% block meta_description %}{% trans 'Новини Одеського історико-краєзнавчого музею.' %}{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="page-head-inner">
+    <h1 class="page-title">{% trans 'Новини' %}</h1>
+    <nav class="breadcrumbs">
+      <a href="{% url 'core:home' %}">{% trans 'Головна' %}</a> / {% trans 'Новини' %}
+    </nav>
+  </div>
+</section>
+
+<main class="page-wrap">
+  <div class="cards-grid">
+    {% for item in news_list %}
+      <article class="info-card">
+        <a href="{{ item.get_absolute_url }}" class="card-image">
+          {% if item.photo %}
+            <img src="{{ item.photo.url }}" alt="{{ item.title }}" loading="lazy">
+          {% endif %}
+        </a>
+        <div class="card-content">
+          <p class="card-date">{{ item.published_at|date:"j F Y" }}</p>
+          <h3>{{ item.title }}</h3>
+          {% if item.summary %}
+            <p>{{ item.summary|truncatechars:160 }}</p>
+          {% endif %}
+          <a href="{{ item.get_absolute_url }}" class="btn-details">{% trans 'Детальніше' %}</a>
+        </div>
+      </article>
+    {% empty %}
+      <p class="empty-state">{% trans 'Новин поки що немає.' %}</p>
+    {% endfor %}
+  </div>
+
+  {% include 'includes/pagination.html' %}
+</main>
+{% endblock %}

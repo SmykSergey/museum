@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static i18n ui %}
+
+{% block title %}{% trans 'Бібліотека' %} – {% trans 'Одеський історико-краєзнавчий музей' %}{% endblock %}
+{% block meta_description %}{% trans 'Публікації музею: архів випусків «Вісника Одеського історико-краєзнавчого музею».' %}{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/procurement.css' %}">
+  <link rel="stylesheet" href="{% static 'css/library.css' %}">
+{% endblock %}
+
+{% block content %}
+<main class="procurement library">
+  <h1 class="proc-title">{% trans 'Публікації' %}</h1>
+
+  <div class="proc-toolbar">
+    <div class="proc-toolbar-inner">
+      <form class="proc-search lib-search" method="get" action="{% url 'library:list' %}" role="search">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
+        <input type="search" name="q" value="{{ query }}"
+               placeholder="{% trans 'Знайти випуск' %}" autocomplete="off"
+               aria-label="{% trans 'Пошук випуску' %}">
+      </form>
+    </div>
+  </div>
+
+  <section class="proc-archive">
+    <div class="proc-archive-head lib-head">
+      <div>
+        <p class="proc-eyebrow">{% trans 'Періодичне видання' %}</p>
+        <h2 class="proc-heading">{% trans 'Вісник Одеського історико-краєзнавчого музею' %}</h2>
+      </div>
+      <p class="proc-total">
+        {% if query %}
+          {% trans 'Знайдено' %}: {{ issues|length }}
+        {% else %}
+          {{ total }} {{ total|plural_uk:'випуск,випуски,випусків' }}
+        {% endif %}
+      </p>
+    </div>
+
+    <ul class="lib-grid">
+      {% for issue in issues %}
+        <li class="lib-item">
+          <a href="{{ issue.download_url|default:'#' }}"
+             {% if issue.download_url %}target="_blank" rel="noopener"{% endif %}>
+            <span class="lib-num">№{{ issue.number|stringformat:"02d" }}</span>
+            <span class="lib-name">{{ issue.display_title }}</span>
+            <svg class="proc-doc-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+
+    {% if not issues %}
+      <p class="proc-empty">{% trans 'За вашим запитом випусків не знайдено.' %}</p>
+    {% endif %}
+  </section>
+
+  {% include 'includes/pagination.html' %}
+</main>
+{% endblock %}

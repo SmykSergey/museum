@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+{% load static i18n ui %}
+
+{% block title %}{{ page.title }} – {% trans 'Одеський історико-краєзнавчий музей' %}{% endblock %}
+{% block meta_description %}{{ page.subtitle|default:page.title }}{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/about.css' %}">
+{% endblock %}
+
+{% block body_class %}about-page{% endblock %}
+
+{% block content %}
+<main class="about">
+  <div class="about-heading">
+    <h1>{{ page.title }}</h1>
+    {% if page.subtitle %}
+      <p class="about-subtitle">{{ page.subtitle }}</p>
+    {% endif %}
+  </div>
+
+  <div class="about-content">
+    <div class="about-photo">
+      {% if page.photo %}
+        <img src="{{ page.photo.url }}" alt="{{ page.title }}">
+      {% else %}
+        <img src="{% static 'ph/gavanna.jpg' %}" alt="{{ page.title }}">
+      {% endif %}
+    </div>
+
+    <div class="about-cards">
+      <a href="{% url 'pages:history' %}" class="about-card">
+        <span class="about-card-icon"><img src="{% static 'ph/history.png' %}" alt=""></span>
+        <span class="about-card-body">
+          <span class="about-card-title">{% trans 'Історія музею' %}</span>
+          <span class="about-card-text">{% trans 'Етапи становлення: від палацу до музею' %}</span>
+        </span>
+      </a>
+
+      <a href="#exposition" class="about-card">
+        <span class="about-card-icon"><img src="{% static 'ph/exposition.png' %}" alt=""></span>
+        <span class="about-card-body">
+          <span class="about-card-title">{% trans 'Експозиція' %}</span>
+          <span class="about-card-text">{% trans 'Від античних знахідок до сучасності' %}</span>
+        </span>
+      </a>
+
+      <a href="#contacts" class="about-card">
+        <span class="about-card-icon"><img src="{% static 'ph/telephone.png' %}" alt=""></span>
+        <span class="about-card-body">
+          <span class="about-card-title">{% trans 'Години роботи та контакти' %}</span>
+          <span class="about-card-text">
+            {% if location and location.schedule_lines %}
+              {{ location.schedule_lines.0 }}
+            {% else %}
+              {% trans 'Пн-Пт: 10:00 – 18:00' %}
+            {% endif %}
+          </span>
+        </span>
+      </a>
+    </div>
+  </div>
+
+  {% if page.intro %}
+    <div class="article-body about-intro">{{ page.intro|safe }}</div>
+  {% endif %}
+
+  <section class="expo" id="exposition">
+    <h2 class="expo-heading">{% trans 'Експозиція' %}</h2>
+    <div class="expo-grid">
+      {% for exhibit in exhibits %}
+        <article class="expo-card">
+          <div class="expo-card-image">
+            {% if exhibit.image %}
+              <img src="{{ exhibit.image.url }}" alt="{{ exhibit.title }}" loading="lazy">
+            {% endif %}
+          </div>
+          <div class="expo-card-body">
+            <h3 class="expo-card-title">{{ exhibit.title }}</h3>
+            {% if exhibit.summary %}
+              <p class="expo-card-text">{{ exhibit.summary }}</p>
+            {% endif %}
+            <a href="{{ exhibit.get_absolute_url }}" class="expo-btn">{% trans 'Детальніше' %}</a>
+          </div>
+        </article>
+      {% empty %}
+        <p class="empty-state">{% trans 'Експонати поки що не додані.' %}</p>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="contacts about-contacts" id="contacts">
+    <h2>{% trans 'Контакти' %}</h2>
+
+    {% include 'includes/socials.html' %}
+
+    <div class="venue about-venue">
+      <h4 class="venue-subtitle">{% trans 'Графік роботи' %}</h4>
+      <div class="venue-info-row venue-info-row--two">
+        <div class="venue-info-item">
+          <span class="icon-slot"><img src="{% static 'ph/clock.png' %}" alt="{% trans 'Графік роботи' %}"></span>
+          <p class="venue-info-title">{% trans 'Графік' %}</p>
+          <p class="venue-info-text">
+            {% if location and location.schedule_lines %}
+              {% for line in location.schedule_lines %}{{ line }}{% if not forloop.last %}<br>{% endif %}{% endfor %}
+            {% else %}
+              {% trans 'Пн-Пт: 10:00 – 18:00' %}
+            {% endif %}
+          </p>
+        </div>
+        <div class="venue-info-item">
+          <span class="icon-slot"><img src="{% static 'ph/adres.png' %}" alt="{% trans 'Адреса' %}"></span>
+          <p class="venue-info-title">{% trans 'Адреса' %}</p>
+          <p class="venue-info-text">
+            {% if location %}{{ location.address }}{% else %}{% trans 'вул. Гаванна, 4, Одеса' %}{% endif %}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="tickets" id="tickets">
+      <h4 class="venue-subtitle">{% trans 'Ціна квитків' %}</h4>
+      {% if location and location.prices %}
+        <div class="tickets-body article-body">{{ location.prices|safe }}</div>
+      {% else %}
+        <p class="tickets-body article-body">{% trans 'Інформація про ціни уточнюється.' %}</p>
+      {% endif %}
+    </div>
+
+    {% if page.map_embed_url %}
+      <div class="museum-map" id="map">
+        <iframe src="{{ page.map_embed_url }}"
+                title="{{ page.title }} — {% trans 'на карті' %}"
+                allowfullscreen="" loading="lazy"
+                referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        <div class="museum-map-cover" aria-hidden="true">
+          <span class="museum-map-pin">
+            <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>
+          </span>
+          <span class="museum-map-text">{% trans 'Де знаходиться музей? Тут ви знайдете наші маршрути та інформацію про паркінг.' %}</span>
+        </div>
+      </div>
+    {% endif %}
+  </section>
+</main>
+{% endblock %}

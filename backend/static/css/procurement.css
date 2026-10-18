@@ -1,0 +1,319 @@
+/* ===================== ДЕРЖАВНІ ЗАКУПІВЛІ ====================== */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300..700;1,300..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300..700;1,300..700&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+
+main.procurement {
+    padding: 70px 0 140px;
+    font-family: "Open Sans", sans-serif;
+    color: #2B2B2B;
+}
+
+.proc-title {
+    font-size: clamp(36px, 4.4vw, 80px);
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 60px;
+}
+
+/* ---- Панель пошуку (на всю ширину екрана) ---- */
+
+.proc-toolbar {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    background: rgba(222, 216, 204, 0.55);
+    border-top: 1px solid rgba(43, 43, 43, 0.1);
+    border-bottom: 1px solid rgba(43, 43, 43, 0.1);
+}
+
+.proc-toolbar-inner {
+    width: 90%;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 36px 0;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+}
+
+.proc-search {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border-bottom: 1px solid rgba(43, 43, 43, 0.35);
+    padding: 12px 0;
+    transition: border-color 0.2s ease;
+}
+
+.proc-search:focus-within {
+    border-color: #731C1E;
+}
+
+.proc-search svg {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    fill: none;
+    stroke: #731C1E;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+}
+
+.proc-search input {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    background: transparent;
+    font: inherit;
+    font-size: 18px;
+    color: #2B2B2B;
+    outline: none;
+}
+
+.proc-search input::placeholder {
+    color: rgba(43, 43, 43, 0.55);
+}
+
+.proc-years {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.proc-year-btn {
+    font: inherit;
+    font-size: 18px;
+    padding: 10px 20px;
+    border-radius: 999px;
+    border: 1px solid rgba(43, 43, 43, 0.35);
+    background: transparent;
+    color: #2B2B2B;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.proc-year-btn:hover {
+    border-color: #731C1E;
+    color: #731C1E;
+}
+
+.proc-year-btn.is-active {
+    background: #731C1E;
+    border-color: #731C1E;
+    color: #fff;
+}
+
+/* ---- Архів ---- */
+
+.proc-archive {
+    padding-top: 80px;
+}
+
+.proc-archive-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 20px;
+    margin-bottom: 50px;
+}
+
+.proc-eyebrow {
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #731C1E;
+    margin-bottom: 12px;
+    font-family: "Cormorant Infant";
+}
+
+.proc-heading {
+    font-size: clamp(28px, 2.6vw, 46px);
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+}
+
+.proc-total {
+    font-size: 16px;
+    color: rgba(43, 43, 43, 0.65);
+    white-space: nowrap;
+}
+
+.proc-year + .proc-year {
+    margin-top: 70px;
+}
+
+.proc-year-head {
+    display: flex;
+    align-items: baseline;
+    gap: 22px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid rgba(43, 43, 43, 0.45);
+}
+
+.proc-year-head h3 {
+    font-size: clamp(26px, 1.9vw, 34px);
+    font-weight: 600;
+}
+
+.proc-year-head span {
+    font-size: 15px;
+    color: rgba(43, 43, 43, 0.65);
+}
+
+.proc-docs {
+    list-style: none;
+}
+
+.proc-doc {
+    border-bottom: 1px solid rgba(43, 43, 43, 0.12);
+}
+
+.proc-doc[hidden] {
+    display: none;
+}
+
+.proc-doc a {
+    display: grid;
+    grid-template-columns: 190px minmax(0, 1fr) 24px;
+    align-items: center;
+    gap: 20px;
+    padding: 28px 0;
+    text-decoration: none;
+    color: #2B2B2B;
+    transition: color 0.2s ease, padding 0.25s ease, background 0.2s ease;
+}
+
+.proc-doc-date {
+    font-size: 17px;
+    color: rgba(43, 43, 43, 0.6);
+    font-variant-numeric: tabular-nums;
+}
+
+.proc-doc-name {
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.proc-doc-arrow {
+    width: 20px;
+    height: 20px;
+    justify-self: end;
+    fill: none;
+    stroke: #731C1E;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform 0.25s ease;
+}
+
+.proc-doc a:hover {
+    color: #731C1E;
+    background: rgba(222, 216, 204, 0.35);
+    padding-left: 14px;
+    padding-right: 14px;
+}
+
+.proc-doc a:hover .proc-doc-arrow {
+    transform: translateX(4px);
+}
+
+.proc-doc mark {
+    background: rgba(115, 28, 30, 0.14);
+    color: inherit;
+    border-radius: 2px;
+}
+
+.proc-more {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 26px auto 0;
+    font: inherit;
+    font-size: 19px;
+    color: #731C1E;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    padding: 6px 10px;
+}
+
+.proc-more:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+.proc-empty {
+    padding: 40px 0;
+    font-size: 18px;
+    color: rgba(43, 43, 43, 0.65);
+}
+
+/* ===================== ADAPTIVE ====================== */
+
+@media (max-width: 1000px) {
+    .proc-toolbar-inner {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 20px;
+    }
+
+    .proc-doc a {
+        grid-template-columns: 130px minmax(0, 1fr) 20px;
+    }
+}
+
+@media (max-width: 700px) {
+    main.procurement {
+        padding: 30px 16px 70px;
+    }
+
+    .proc-title {
+        margin-bottom: 30px;
+    }
+
+    .proc-toolbar-inner {
+        padding: 24px 16px;
+    }
+
+    .proc-year-btn {
+        font-size: 16px;
+        padding: 8px 16px;
+    }
+
+    .proc-archive {
+        padding-top: 44px;
+    }
+
+    .proc-archive-head {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-bottom: 30px;
+    }
+
+    .proc-doc a {
+        grid-template-columns: minmax(0, 1fr) 20px;
+        row-gap: 6px;
+        padding: 20px 0;
+    }
+
+    .proc-doc-date {
+        grid-column: 1;
+        font-size: 15px;
+    }
+
+    .proc-doc-name {
+        grid-column: 1;
+        font-size: 17px;
+    }
+
+    .proc-doc-arrow {
+        grid-column: 2;
+        grid-row: 1 / span 2;
+    }
+}

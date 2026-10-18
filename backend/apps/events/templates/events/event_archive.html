@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}{% trans 'Архів подій' %} – {% trans 'Одеський історико-краєзнавчий музей' %}{% endblock %}
+{% block meta_description %}{% trans 'Архів подій Одеського історико-краєзнавчого музею.' %}{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="page-head-inner">
+    <h1 class="page-title">{% trans 'Архів подій' %}</h1>
+    <nav class="breadcrumbs">
+      <a href="{% url 'core:home' %}">{% trans 'Головна' %}</a> /
+      <a href="{% url 'events:list' %}">{% trans 'Події' %}</a> / {% trans 'Архів' %}
+    </nav>
+  </div>
+</section>
+
+<main class="page-wrap">
+  <p class="page-intro">{% trans 'Події, які вже відбулися.' %}</p>
+
+  <div class="cards-grid">
+    {% for event in events %}
+      <article class="info-card">
+        <a href="{{ event.get_absolute_url }}" class="card-image">
+          {% if event.photo %}
+            <img src="{{ event.photo.url }}" alt="{{ event.title }}" loading="lazy">
+          {% endif %}
+        </a>
+        <div class="card-content">
+          <span class="event-badge event-badge--past">{% trans 'Завершилася' %}</span>
+          <p class="card-date">{{ event.starts_at|date:"j F Y, H:i" }}</p>
+          <h3>{{ event.title }}</h3>
+          {% if event.summary %}
+            <p>{{ event.summary|truncatechars:150 }}</p>
+          {% endif %}
+          <a href="{{ event.get_absolute_url }}" class="btn-details">{% trans 'Детальніше' %}</a>
+        </div>
+      </article>
+    {% empty %}
+      <p class="empty-state">{% trans 'Архів подій порожній.' %}</p>
+    {% endfor %}
+  </div>
+
+  {% include 'includes/pagination.html' %}
+
+  <a href="{% url 'events:list' %}" class="btn-archive">{% trans 'Актуальні події' %}</a>
+</main>
+{% endblock %}

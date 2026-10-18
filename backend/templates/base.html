@@ -1,12 +1,62 @@
-<!DOCTYPE html>
+{% load static i18n %}<!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}">
 <head>
-    <meta charset="UTF-8">
-    <title>Музей — заглушка</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Одеський історико-краєзнавчий музей{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}Одеський історико-краєзнавчий музей: новини, події, локації, віртуальні екскурсії.{% endblock %}">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/pages.css' %}">
+  {% block extra_css %}{% endblock %}
 </head>
-<body>
-    <h1>Каркас проекта работает</h1>
-    <p>Язык: {{ LANGUAGE_CODE }}</p>
-    <p>Скоро здесь будет сайт музея.</p>
+<body class="{% block body_class %}{% endblock %}">
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="{% url 'core:home' %}" class="logo-title">
+      <img src="{% static 'ph/logo.png' %}" alt="{% trans 'Логотип музею' %}" class="logo-icon">
+      <span>{% trans 'Одеський історико-краєзнавчий музей' %}</span>
+    </a>
+    <nav class="main-nav">
+      <div class="nav-dropdown">
+        <a href="{% url 'pages:about' %}" class="has-dropdown{% if request.resolver_match.app_name == 'pages' %} active{% endif %}">{% trans 'Про музей' %} <span class="arrow">⌄</span></a>
+        <div class="nav-submenu">
+          <a href="{% url 'pages:about' %}"{% if request.resolver_match.url_name == 'about' %} class="active"{% endif %}>{% trans 'Про музей' %}</a>
+          <a href="#">{% trans 'Запобігання корупції' %}</a>
+          <a href="{% url 'procurement:list' %}"{% if request.resolver_match.app_name == 'procurement' %} class="active"{% endif %}>{% trans 'Державні закупівлі' %}</a>
+        </div>
+      </div>
+      <a href="{% url 'events:list' %}"{% if request.resolver_match.app_name == 'events' %} class="active"{% endif %}>{% trans 'Події' %}</a>
+      <a href="{% url 'locations:list' %}"{% if request.resolver_match.app_name == 'locations' %} class="active"{% endif %}>{% trans 'Локації' %}</a>
+      <a href="#">{% trans 'Відвідувачам' %}</a>
+      <a href="{% url 'heroes:list' %}"{% if request.resolver_match.app_name == 'heroes' %} class="active"{% endif %}>{% trans 'Герої не вмирають' %}</a>
+      <a href="{% url 'library:list' %}"{% if request.resolver_match.app_name == 'library' %} class="active"{% endif %}>{% trans 'Бібліотека' %}</a>
+
+      <form class="lang-switch" id="langSwitch" action="{% url 'set_language' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+        <button type="button" class="lang-current" id="langCurrent">
+          {% if LANGUAGE_CODE == 'en' %}ENG{% else %}УКР{% endif %} <span class="lang-arrow">⌄</span>
+        </button>
+        <div class="lang-dropdown" id="langDropdown">
+          {% for code, name in LANGUAGES %}
+            <button type="submit" name="language" value="{{ code }}"
+                    class="lang-option{% if code == LANGUAGE_CODE %} active{% endif %}">
+              {% if code == 'en' %}ENG{% else %}УКР{% endif %}
+            </button>
+          {% endfor %}
+        </div>
+      </form>
+    </nav>
+  </div>
+  <div class="header-pattern"></div>
+</header>
+
+{% block content %}{% endblock %}
+
+{% block footer %}{% endblock %}
+
+<script src="{% static 'js/geroi.js' %}"></script>
+{% block extra_js %}{% endblock %}
 </body>
 </html>

@@ -1,0 +1,108 @@
+
+main.exhibit {
+    padding: 10px 0 140px;
+    color: #2B2B2B;
+}
+
+.exhibit-content {
+    display: grid;
+    grid-template-columns: 25% minmax(0, 1fr);
+    column-gap: 5%;
+    align-items: stretch;
+}
+
+/* фото стоїть на одному рівні з блоком тексту */
+.exhibit-photo {
+    grid-row: 2;
+}
+
+.exhibit-photo img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+}
+
+/* заголовок + блок тексту — у правій колонці,
+   заголовок по центру над текстом */
+.exhibit-info {
+    display: contents;
+}
+
+.exhibit-title {
+    grid-column: 2;
+    grid-row: 1;
+    margin-bottom: 0.9em;
+    text-align: center;
+    font-family: "Open Sans", sans-serif;
+    font-size: clamp(28px, 3.2vw, 58px);
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.exhibit-text {
+    grid-column: 2;
+    grid-row: 2;
+    margin-right: 3%;
+    padding: clamp(10px, 1.1vw, 20px) clamp(10px, 0.8vw, 16px);
+    border-radius: 30px;
+    background: rgba(255, 255, 255, 0.20);
+}
+
+.exhibit-text p {
+    color: #000;
+    font-family: "Roboto", "Open Sans", sans-serif;
+    font-size: clamp(16px, 1.39vw, 25px);
+    font-weight: 700;
+    line-height: 2.4;
+}
+
+.exhibit-text p + p {
+    margin-top: 1em;
+}
+
+/* ===================== ADAPTIVE ====================== */
+
+@media (max-width: 900px) {
+    .exhibit-content {
+        grid-template-columns: 1fr;
+        row-gap: 30px;
+    }
+
+    .exhibit-title,
+    .exhibit-photo,
+    .exhibit-text {
+        grid-column: 1;
+        grid-row: auto;
+    }
+
+    .exhibit-title {
+        order: -1;
+        margin-bottom: 0;
+    }
+
+    .exhibit-photo img {
+        max-width: 420px;
+        margin: 0 auto;
+    }
+
+    .exhibit-text {
+        margin-right: 0;
+        padding: 20px;
+    }
+
+    .exhibit-text p {
+        line-height: 1.9;
+    }
+}
+
+@media (max-width: 700px) {
+    main.exhibit {
+        padding: 30px 16px 70px;
+    }
+
+    .exhibit-text p {
+        font-size: 16px;
+        line-height: 1.75;
+    }
+}

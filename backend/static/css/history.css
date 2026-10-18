@@ -1,0 +1,100 @@
+/* ===================== ІСТОРІЯ МУЗЕЮ ======================
+   Розміри задані відносно ширини екрана (vw / %),
+   щоб сторінка мала ті ж пропорції, що й у макеті,
+   на будь-якому моніторі. */
+
+main.history {
+    padding: 10px 0 140px;
+    font-family: "Open Sans", sans-serif;
+    color: #2B2B2B;
+}
+
+.history-title {
+    text-align: center;
+    margin-bottom: 0.4em;
+    font-size: clamp(32px, 4.45vw, 80px);
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.history-content {
+    display: grid;
+    grid-template-columns: 24% minmax(0, 1fr);
+    column-gap: 6%;
+    align-items: start;
+}
+
+.history-photos {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(14px, 1.7vw, 30px);
+}
+
+.history-photos img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 309 / 207;
+    object-fit: cover;
+}
+
+.history-text {
+    max-width: 92%;
+}
+
+.history-text p {
+    font-size: clamp(16px, 1.88vw, 34px);
+    font-weight: 400;
+    line-height: 1.8;
+}
+
+.history-text p + p {
+    margin-top: 1.8em;
+}
+
+/* ===================== ADAPTIVE ====================== */
+
+@media (max-width: 900px) {
+    .history-title {
+        margin-bottom: 30px;
+    }
+
+    .history-content {
+        grid-template-columns: 1fr;
+        row-gap: 36px;
+    }
+
+    .history-text {
+        max-width: none;
+    }
+
+    .history-photos {
+        flex-direction: row;
+    }
+
+    .history-photos img {
+        width: calc(50% - 7px);
+    }
+
+    .history-text p {
+        font-size: 18px;
+    }
+
+    .history-text p + p {
+        margin-top: 28px;
+    }
+}
+
+@media (max-width: 700px) {
+    main.history {
+        padding: 30px 16px 70px;
+    }
+
+    .history-text p {
+        font-size: 17px;
+        line-height: 1.75;
+    }
+
+    .history-text p + p {
+        margin-top: 24px;
+    }
+}

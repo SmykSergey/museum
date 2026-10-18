@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}{% trans 'Одеський історико-краєзнавчий музей' %}{% endblock %}
+
+{% block content %}
+<main>
+  <section class="hero">
+    <div class="hero-photo">
+      <img src="{% static 'ph/home1.jpg' %}" alt="{% trans 'Парадні сходи музею' %}">
+    </div>
+    <div class="hero-logo">
+      <img src="{% static 'ph/logo.png' %}" alt="{% trans 'Одеський історико-краєзнавчий музей' %}" class="hero-logo-img">
+      <div class="hero-welcome">
+        <h1>{% trans 'Ласкаво просимо до Одеського історико-краєзнавчого музею' %}</h1>
+        <p>{% trans 'Скарбниця культурної спадщини Одещини: понад століття ми досліджуємо, зберігаємо та презентуємо світу історичну велич нашого морського краю.' %}</p>
+        <a href="#" class="btn-visit">{% trans 'Відвідати музей' %}</a>
+      </div>
+    </div>
+  </section>
+
+  {# TODO (етап 2–4): локації мають братися з БД (apps.locations), поки що — з вёрстки #}
+  <section class="locations">
+    <h2>{% trans 'Наші локації' %}</h2>
+    <div class="locations-grid">
+      {% for location in locations %}
+        <a href="{{ location.get_absolute_url }}" class="location-card">
+          {% if location.photo %}
+            <img src="{{ location.photo.url }}" alt="{{ location.name }}">
+          {% else %}
+            <img src="{% static 'ph/no-photo.jpg' %}" alt="{{ location.name }}">
+          {% endif %}
+          <p class="location-name">{{ location.name }}</p>
+          {% if location.address %}
+            <p class="location-address">{{ location.address }}</p>
+          {% endif %}
+        </a>
+      {% empty %}
+        <p class="empty-state">{% trans 'Локації поки що не додані.' %}</p>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="events">
+    <h2>{% trans 'Події' %}</h2>
+    <div class="cards-grid">
+      {% for event in events %}
+        <article class="info-card">
+          <a href="{{ event.get_absolute_url }}" class="card-image">
+            {% if event.photo %}
+              <img src="{{ event.photo.url }}" alt="{{ event.title }}" loading="lazy">
+            {% endif %}
+          </a>
+          <div class="card-content">
+            <p class="card-date">{{ event.starts_at|date:"j F Y, H:i" }}</p>
+            <h3>{{ event.title }}</h3>
+            {% if event.summary %}
+              <p>{{ event.summary|truncatechars:120 }}</p>
+            {% endif %}
+            <a href="{{ event.get_absolute_url }}" class="btn-details">{% trans 'Детальніше' %}</a>
+          </div>
+        </article>
+      {% empty %}
+        <p class="empty-state">{% trans 'Найближчим часом подій не заплановано.' %}</p>
+      {% endfor %}
+    </div>
+    <a href="{% url 'events:archive' %}" class="btn-archive">{% trans 'Архів' %}</a>
+  </section>
+
+  <section class="news">
+    <h2>{% trans 'Новини' %}</h2>
+    <div class="cards-grid">
+      {% for item in news %}
+        <article class="info-card">
+          <a href="{{ item.get_absolute_url }}" class="card-image">
+            {% if item.photo %}
+              <img src="{{ item.photo.url }}" alt="{{ item.title }}" loading="lazy">
+            {% endif %}
+          </a>
+          <div class="card-content">
+            <p class="card-date">{{ item.published_at|date:"j F Y" }}</p>
+            <h3>{{ item.title }}</h3>
+            {% if item.summary %}
+              <p>{{ item.summary|truncatechars:120 }}</p>
+            {% endif %}
+            <a href="{{ item.get_absolute_url }}" class="btn-details">{% trans 'Детальніше' %}</a>
+          </div>
+        </article>
+      {% empty %}
+        <p class="empty-state">{% trans 'Новин поки що немає.' %}</p>
+      {% endfor %}
+    </div>
+    <a href="{% url 'news:list' %}" class="btn-archive">{% trans 'Усі новини' %}</a>
+  </section>
+
+  <section class="contacts">
+    <h2>{% trans 'Контакти' %}</h2>
+
+    {% include 'includes/socials.html' %}
+
+    {% for location in contacts %}
+      <div class="venue">
+        <h3 class="venue-name">
+          <a href="{{ location.get_absolute_url }}">{{ location.name }}</a>
+        </h3>
+        <h4 class="venue-subtitle">{% trans 'Графік роботи' %}</h4>
+        <div class="venue-info-row">
+          <div class="venue-info-item">
+            <span class="icon-slot"><img src="{% static 'ph/clock.png' %}" alt="{% trans 'Графік роботи' %}"></span>
+            <p class="venue-info-title">{% trans 'Графік' %}</p>
+            <p class="venue-info-text">
+              {% for line in location.schedule_lines %}{{ line }}{% if not forloop.last %}<br>{% endif %}{% endfor %}
+            </p>
+          </div>
+          <div class="venue-info-item">
+            <span class="icon-slot"><img src="{% static 'ph/adres.png' %}" alt="{% trans 'Адреса' %}"></span>
+            <p class="venue-info-title">{% trans 'Адреса' %}</p>
+            <p class="venue-info-text">{{ location.address|default:'—' }}</p>
+          </div>
+          <div class="venue-info-item">
+            <span class="icon-circle">
+              <svg viewBox="0 0 101 101" fill="none"><path d="M15.2644 85.9644C10.4889 81.3521 6.67979 75.8348 4.05934 69.7346C1.43889 63.6344 0.0595787 57.0734 0.00188784 50.4345C-0.055803 43.7955 1.20928 37.2115 3.72333 31.0667C6.23737 24.9219 9.95003 19.3393 14.6447 14.6447C19.3393 9.95003 24.9219 6.23737 31.0667 3.72333C37.2115 1.20928 43.7955 -0.055803 50.4345 0.00188784C57.0734 0.0595787 63.6344 1.43889 69.7346 4.05934C75.8348 6.67979 81.3521 10.4889 85.9644 15.2644C95.0723 24.6945 100.112 37.3246 99.9981 50.4345C99.8842 63.5443 94.6257 76.0849 85.3553 85.3553C76.0849 94.6257 63.5443 99.8842 50.4345 99.9981C37.3246 100.112 24.6945 95.0723 15.2644 85.9644ZM78.9144 78.9144C86.42 71.4088 90.6367 61.229 90.6367 50.6144C90.6367 39.9999 86.42 29.82 78.9144 22.3144C71.4088 14.8088 61.229 10.5922 50.6144 10.5922C39.9999 10.5922 29.82 14.8088 22.3144 22.3144C14.8088 29.82 10.5922 39.9999 10.5922 50.6144C10.5922 61.229 14.8088 71.4088 22.3144 78.9144C29.82 86.42 39.9999 90.6367 50.6144 90.6367C61.229 90.6367 71.4088 86.42 78.9144 78.9144ZM45.6144 55.6144V45.6144H55.6144V75.6144H45.6144V55.6144ZM45.6144 25.6144H55.6144V35.6144H45.6144V25.6144Z" fill="#731C1E"/></svg>
+            </span>
+            <p class="venue-info-title">{% trans 'Ціна квитків' %}</p>
+            <a href="{{ location.get_absolute_url }}" class="venue-info-link">{% trans 'детальніше' %}</a>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p class="empty-state">{% trans 'Контакти локацій поки що не заповнені.' %}</p>
+    {% endfor %}
+  </section>
+</main>
+{% endblock %}

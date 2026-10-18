@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static i18n ui %}
+
+{% block title %}{{ page.title }} – {% trans 'Одеський історико-краєзнавчий музей' %}{% endblock %}
+{% block meta_description %}{{ page.title }} — {% trans 'Одеський історико-краєзнавчий музей' %}{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/history.css' %}">
+{% endblock %}
+
+{% block content %}
+<main class="history">
+  <h1 class="history-title">{{ page.title }}</h1>
+
+  <div class="history-content">
+    <div class="history-photos">
+      {% for photo in page.photos %}
+        <img src="{{ photo.url }}" alt="{{ page.title }}">
+      {% endfor %}
+    </div>
+
+    <div class="history-text">
+      {{ page.body|safe }}
+    </div>
+  </div>
+
+  <p class="history-back">
+    <a href="{% url 'pages:about' %}" class="back-link">← {% trans 'Про музей' %}</a>
+  </p>
+</main>
+{% endblock %}

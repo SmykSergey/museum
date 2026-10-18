@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}{{ location.name }} – {% trans 'Одеський історико-краєзнавчий музей' %}{% endblock %}
+{% block meta_description %}{{ location.name }}{% if location.address %}, {{ location.address }}{% endif %}{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="page-head-inner">
+    <h1 class="page-title">{{ location.name }}</h1>
+    <nav class="breadcrumbs">
+      <a href="{% url 'core:home' %}">{% trans 'Головна' %}</a> /
+      <a href="{% url 'locations:list' %}">{% trans 'Локації' %}</a>
+    </nav>
+  </div>
+</section>
+
+<main class="page-wrap">
+  <div class="location-hero">
+    <div class="location-hero-photo">
+      {% if location.photo %}
+        <img src="{{ location.photo.url }}" alt="{{ location.name }}">
+      {% else %}
+        <img src="{% static 'ph/no-photo.jpg' %}" alt="{{ location.name }}">
+      {% endif %}
+    </div>
+
+    <div>
+      <ul class="info-list">
+        {% if location.address %}
+          <li>
+            <span class="info-label">{% trans 'Адреса' %}</span>
+            <span class="info-value">{{ location.address }}</span>
+          </li>
+        {% endif %}
+        {% if location.schedule %}
+          <li>
+            <span class="info-label">{% trans 'Графік роботи' %}</span>
+            <span class="info-value">
+              {% for line in location.schedule_lines %}{{ line }}<br>{% endfor %}
+            </span>
+          </li>
+        {% endif %}
+        {% if location.prices %}
+          <li>
+            <span class="info-label">{% trans 'Ціни' %}</span>
+            <span class="info-value article-body">{{ location.prices|safe }}</span>
+          </li>
+        {% endif %}
+      </ul>
+
+      <a href="{% url 'events:list' %}" class="btn-details">{% trans 'Події площадки' %}</a>
+    </div>
+  </div>
+
+  {% if location.description %}
+    <section>
+      <h2 class="section-title">{% trans 'Про локацію' %}</h2>
+      <div class="article-body">{{ location.description|safe }}</div>
+    </section>
+  {% endif %}
+
+  {% if upcoming_events %}
+    <section class="related">
+      <h2 class="section-title">{% trans 'Найближчі події' %}</h2>
+      <div class="cards-grid">
+        {% for event in upcoming_events %}
+          <article class="info-card">
+            <a href="{{ event.get_absolute_url }}" class="card-image">
+              {% if event.photo %}
+                <img src="{{ event.photo.url }}" alt="{{ event.title }}" loading="lazy">
+              {% endif %}
+            </a>
+            <div class="card-content">
+              <p class="card-date">{{ event.starts_at|date:"j F Y, H:i" }}</p>
+              <h3>{{ event.title }}</h3>
+              <a href="{{ event.get_absolute_url }}" class="btn-details">{% trans 'Детальніше' %}</a>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+
+  {% if other_locations %}
+    <section class="related">
+      <h2 class="section-title">{% trans 'Інші локації' %}</h2>
+      <div class="locations-grid">
+        {% for other in other_locations %}
+          <a href="{{ other.get_absolute_url }}" class="location-card">
+            {% if other.photo %}
+              <img src="{{ other.photo.url }}" alt="{{ other.name }}" loading="lazy">
+            {% endif %}
+            <p class="location-name">{{ other.name }}</p>
+            {% if other.address %}
+              <p class="location-address">{{ other.address }}</p>
+            {% endif %}
+          </a>
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+</main>
+{% endblock %}

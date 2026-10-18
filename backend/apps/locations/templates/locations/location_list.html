@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}{% trans 'Наші локації' %} – {% trans 'Одеський історико-краєзнавчий музей' %}{% endblock %}
+{% block meta_description %}{% trans 'Адреси, графік роботи та ціни на квитки чотирьох локацій музею.' %}{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="page-head-inner">
+    <h1 class="page-title">{% trans 'Наші локації' %}</h1>
+    <nav class="breadcrumbs">
+      <a href="{% url 'core:home' %}">{% trans 'Головна' %}</a> / {% trans 'Локації' %}
+    </nav>
+  </div>
+</section>
+
+<main class="page-wrap">
+  <p class="page-intro">{% trans 'Музей об’єднує чотири площадки в Одесі та Одеській області.' %}</p>
+
+  <div class="locations-grid">
+    {% for location in locations %}
+      <a href="{{ location.get_absolute_url }}" class="location-card">
+        {% if location.photo %}
+          <img src="{{ location.photo.url }}" alt="{{ location.name }}" loading="lazy">
+        {% endif %}
+        <p class="location-name">{{ location.name }}</p>
+        {% if location.address %}
+          <p class="location-address">{{ location.address }}</p>
+        {% endif %}
+      </a>
+    {% empty %}
+      <p class="empty-state">{% trans 'Локації поки що не додані.' %}</p>
+    {% endfor %}
+  </div>
+
+  {% include 'includes/pagination.html' %}
+</main>
+{% endblock %}

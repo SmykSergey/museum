@@ -1,0 +1,16 @@
+{% load i18n %}
+{% if is_paginated %}
+  <nav class="pagination" aria-label="{% trans 'Постранична навігація' %}">
+    {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}">← {% trans 'Попередня' %}</a>
+    {% endif %}
+
+    <span class="pagination-info">
+      {% blocktrans with number=page_obj.number total=page_obj.paginator.num_pages %}Сторінка {{ number }} з {{ total }}{% endblocktrans %}
+    </span>
+
+    {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}">{% trans 'Наступна' %} →</a>
+    {% endif %}
+  </nav>
+{% endif %}

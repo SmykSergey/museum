@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}{{ event.title }} – {% trans 'Одеський історико-краєзнавчий музей' %}{% endblock %}
+{% block meta_description %}{{ event.summary|default:event.title|truncatechars:180 }}{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="page-head-inner">
+    <nav class="breadcrumbs">
+      <a href="{% url 'core:home' %}">{% trans 'Головна' %}</a> /
+      <a href="{% url 'events:list' %}">{% trans 'Події' %}</a>
+    </nav>
+  </div>
+</section>
+
+<main class="page-wrap page-wrap--narrow">
+  <article class="article">
+    <header class="article-head">
+      {% if event.is_past %}
+        <span class="event-badge event-badge--past">{% trans 'Завершилася' %}</span>
+      {% endif %}
+      <h1 class="article-title">{{ event.title }}</h1>
+
+      <div class="event-meta">
+        <span class="event-meta-item">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/></svg>
+          {% if event.ends_at %}
+            {{ event.starts_at|date:"j F Y, H:i" }} – {{ event.ends_at|date:"j F Y, H:i" }}
+          {% else %}
+            {{ event.starts_at|date:"j F Y, H:i" }}
+          {% endif %}
+        </span>
+        {% if event.location %}
+          <span class="event-meta-item">
+            <svg viewBox="0 0 24 24"><path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+            <a href="{{ event.location.get_absolute_url }}">{{ event.location.name }}</a>
+          </span>
+        {% endif %}
+      </div>
+    </header>
+
+    {% if event.photo %}
+      <div class="article-photo">
+        <img src="{{ event.photo.url }}" alt="{{ event.title }}">
+      </div>
+    {% endif %}
+
+    {% if event.summary %}
+      <p class="article-lead">{{ event.summary }}</p>
+    {% endif %}
+
+    <div class="article-body">
+      {{ event.body|safe }}
+    </div>
+
+    <footer class="article-footer">
+      <a href="{% url 'events:list' %}" class="back-link">← {% trans 'Усі події' %}</a>
+    </footer>
+  </article>
+
+  {% if event.location %}
+    <section class="related">
+      <h2>{% trans 'Місце проведення' %}</h2>
+      <ul class="info-list">
+        <li>
+          <span class="info-label">{% trans 'Локація' %}</span>
+          <span class="info-value">
+            <a href="{{ event.location.get_absolute_url }}">{{ event.location.name }}</a>
+          </span>
+        </li>
+        {% if event.location.address %}
+          <li>
+            <span class="info-label">{% trans 'Адреса' %}</span>
+            <span class="info-value">{{ event.location.address }}</span>
+          </li>
+        {% endif %}
+        {% if event.location.schedule %}
+          <li>
+            <span class="info-label">{% trans 'Графік роботи' %}</span>
+            <span class="info-value">
+              {% for line in event.location.schedule_lines %}{{ line }}<br>{% endfor %}
+            </span>
+          </li>
+        {% endif %}
+      </ul>
+    </section>
+  {% endif %}
+
+  {% if other_events %}
+    <section class="related">
+      <h2>{% trans 'Інші події' %}</h2>
+      <div class="cards-grid">
+        {% for other in other_events %}
+          <article class="info-card">
+            <a href="{{ other.get_absolute_url }}" class="card-image">
+              {% if other.photo %}
+                <img src="{{ other.photo.url }}" alt="{{ other.title }}" loading="lazy">
+              {% endif %}
+            </a>
+            <div class="card-content">
+              <p class="card-date">{{ other.starts_at|date:"j F Y, H:i" }}</p>
+              <h3>{{ other.title }}</h3>
+              <a href="{{ other.get_absolute_url }}" class="btn-details">{% trans 'Детальніше' %}</a>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+</main>
+{% endblock %}

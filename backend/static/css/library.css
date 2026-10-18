@@ -1,0 +1,135 @@
+/* ===================== БІБЛІОТЕКА ======================
+   Базові стилі (заголовок, пошук, шапка архіву) — з procurement.css */
+
+.lib-kicker {
+    font-family: "Cormorant Infant", serif;
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #731C1E;
+    margin-bottom: 14px;
+}
+
+.lib-search {
+    flex: 0 1 900px;
+}
+
+.lib-head {
+    padding-bottom: 36px;
+    margin-bottom: 40px;
+    border-bottom: 1px solid rgba(43, 43, 43, 0.45);
+}
+
+.lib-head .proc-heading {
+    max-width: 960px;
+}
+
+/* ---- Сітка випусків ---- */
+
+.lib-grid {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-top: 1px solid rgba(43, 43, 43, 0.15);
+}
+
+.lib-item {
+    border-bottom: 1px solid rgba(43, 43, 43, 0.15);
+}
+
+.lib-item:not(:nth-child(3n)) {
+    border-right: 1px solid rgba(43, 43, 43, 0.15);
+}
+
+.lib-item a {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    padding: 28px 30px;
+    height: 100%;
+    text-decoration: none;
+    color: #2B2B2B;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.lib-num {
+    font-family: "Cormorant Infant", serif;
+    font-style: italic;
+    font-weight: 600;
+    font-size: 44px;
+    line-height: 1;
+    color: #731C1E;
+}
+
+.lib-name {
+    flex: 1;
+    font-size: 19px;
+    font-weight: 500;
+}
+
+.lib-item .proc-doc-arrow {
+    align-self: center;
+}
+
+.lib-item a:hover {
+    background: rgba(222, 216, 204, 0.45);
+    color: #731C1E;
+}
+
+.lib-item a:hover .proc-doc-arrow {
+    transform: translateX(4px);
+}
+
+.lib-item mark {
+    background: rgba(115, 28, 30, 0.14);
+    color: inherit;
+    border-radius: 2px;
+}
+
+/* ===================== ADAPTIVE ====================== */
+
+@media (max-width: 1100px) {
+    .lib-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .lib-item:not(:nth-child(3n)) {
+        border-right: 0;
+    }
+
+    .lib-item:nth-child(odd) {
+        border-right: 1px solid rgba(43, 43, 43, 0.15);
+    }
+}
+
+@media (max-width: 700px) {
+    .lib-kicker {
+        font-size: 16px;
+    }
+
+    .lib-head {
+        padding-bottom: 24px;
+        margin-bottom: 24px;
+    }
+
+    .lib-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .lib-item:nth-child(odd) {
+        border-right: 0;
+    }
+
+    .lib-item a {
+        padding: 20px 6px;
+    }
+
+    .lib-num {
+        font-size: 36px;
+    }
+
+    .lib-name {
+        font-size: 17px;
+    }
+}

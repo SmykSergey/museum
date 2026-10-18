@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}{{ item.title }} – {% trans 'Одеський історико-краєзнавчий музей' %}{% endblock %}
+{% block meta_description %}{{ item.summary|default:item.title|truncatechars:180 }}{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="page-head-inner">
+    <nav class="breadcrumbs">
+      <a href="{% url 'core:home' %}">{% trans 'Головна' %}</a> /
+      <a href="{% url 'news:list' %}">{% trans 'Новини' %}</a>
+    </nav>
+  </div>
+</section>
+
+<main class="page-wrap page-wrap--narrow">
+  <article class="article">
+    <header class="article-head">
+      <p class="article-date">{{ item.published_at|date:"j F Y" }}</p>
+      <h1 class="article-title">{{ item.title }}</h1>
+    </header>
+
+    {% if item.photo %}
+      <div class="article-photo">
+        <img src="{{ item.photo.url }}" alt="{{ item.title }}">
+      </div>
+    {% endif %}
+
+    {% if item.summary %}
+      <p class="article-lead">{{ item.summary }}</p>
+    {% endif %}
+
+    <div class="article-body">
+      {{ item.body|safe }}
+    </div>
+
+    <footer class="article-footer">
+      <a href="{% url 'news:list' %}" class="back-link">← {% trans 'Усі новини' %}</a>
+    </footer>
+  </article>
+
+  {% if other_news %}
+    <section class="related">
+      <h2>{% trans 'Інші новини' %}</h2>
+      <div class="cards-grid">
+        {% for other in other_news %}
+          <article class="info-card">
+            <a href="{{ other.get_absolute_url }}" class="card-image">
+              {% if other.photo %}
+                <img src="{{ other.photo.url }}" alt="{{ other.title }}" loading="lazy">
+              {% endif %}
+            </a>
+            <div class="card-content">
+              <p class="card-date">{{ other.published_at|date:"j F Y" }}</p>
+              <h3>{{ other.title }}</h3>
+              <a href="{{ other.get_absolute_url }}" class="btn-details">{% trans 'Детальніше' %}</a>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+</main>
+{% endblock %}

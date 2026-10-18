@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static i18n ui %}
+
+{% block title %}{% trans 'Державні закупівлі' %} – {% trans 'Одеський історико-краєзнавчий музей' %}{% endblock %}
+{% block meta_description %}{% trans 'Плани, зміни та обґрунтування закупівель музею за роками.' %}{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/procurement.css' %}">
+{% endblock %}
+
+{% block content %}
+<main class="procurement">
+  <h1 class="proc-title">{% trans 'Державні закупівлі' %}</h1>
+
+  <div class="proc-toolbar">
+    <div class="proc-toolbar-inner">
+      <form class="proc-search" method="get" action="{% url 'procurement:list' %}" role="search">
+        {% if active_year %}<input type="hidden" name="year" value="{{ active_year }}">{% endif %}
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
+        <input type="search" name="q" value="{{ query }}"
+               placeholder="{% trans 'Знайти документ за назвою або датою' %}" autocomplete="off"
+               aria-label="{% trans 'Пошук документа' %}">
+      </form>
+
+      <div class="proc-years" role="group" aria-label="{% trans 'Фільтр за роком' %}">
+        <a class="proc-year-btn{% if not active_year %} is-active{% endif %}"
+           href="{% url 'procurement:list' %}{% if query %}?q={{ query|urlencode }}{% endif %}">{% trans 'Усі роки' %}</a>
+        {% for year in years %}
+          <a class="proc-year-btn{% if active_year == year|stringformat:'s' %} is-active{% endif %}"
+             href="?year={{ year }}{% if query %}&amp;q={{ query|urlencode }}{% endif %}">{{ year }}</a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <section class="proc-archive">
+    <div class="proc-archive-head">
+      <div>
+        <p class="proc-eyebrow">{% trans 'Архів документів' %}</p>
+        <h2 class="proc-heading">{% trans 'Плани та обґрунтування' %}</h2>
+      </div>
+      <p class="proc-total">
+        {% if query or active_year %}
+          {% trans 'Знайдено' %}: {{ documents|length }}
+        {% else %}
+          {{ total }} {{ total|plural_uk:'документ,документи,документів' }}
+        {% endif %}
+      </p>
+    </div>
+
+    {% regroup documents by year as year_groups %}
+    {% for group in year_groups %}
+      <div class="proc-year">
+        <div class="proc-year-head">
+          <h3>{{ group.grouper }}</h3>
+          <span>{{ group.list|length }} {{ group.list|length|plural_uk:'документ,документи,документів' }}</span>
+        </div>
+        <ul class="proc-docs">
+          {% for doc in group.list %}
+            <li class="proc-doc">
+              <a href="{{ doc.download_url|default:'#' }}"
+                 {% if doc.download_url %}target="_blank" rel="noopener"{% endif %}>
+                <span class="proc-doc-date">{{ doc.date|date:"d.m.Y" }}</span>
+                <span class="proc-doc-name">{{ doc.title }}</span>
+                <svg class="proc-doc-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% empty %}
+      <p class="proc-empty">{% trans 'За вашим запитом документів не знайдено.' %}</p>
+    {% endfor %}
+  </section>
+</main>
+{% endblock %}

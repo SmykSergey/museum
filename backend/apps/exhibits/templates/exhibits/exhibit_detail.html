@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}{{ exhibit.title }} – {% trans 'Одеський історико-краєзнавчий музей' %}{% endblock %}
+{% block meta_description %}{{ exhibit.summary|default:exhibit.title|truncatechars:180 }}{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/exhibit.css' %}">
+{% endblock %}
+
+{% block content %}
+<main class="exhibit">
+  <div class="exhibit-content">
+    <div class="exhibit-photo">
+      {% if exhibit.image %}
+        <img src="{{ exhibit.image.url }}" alt="{{ exhibit.title }}">
+      {% else %}
+        <img src="{% static 'ph/no-photo.jpg' %}" alt="{{ exhibit.title }}">
+      {% endif %}
+    </div>
+
+    <div class="exhibit-info">
+      <h1 class="exhibit-title">{{ exhibit.title }}</h1>
+      <div class="exhibit-text">
+        {{ exhibit.body|safe }}
+
+        <p class="article-footer">
+          <a href="{% url 'pages:about' %}#exposition" class="back-link">← {% trans 'До експозиції' %}</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}
