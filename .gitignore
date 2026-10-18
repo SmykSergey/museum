@@ -1,10 +1,22 @@
-# Created by venv; see https://docs.python.org/3/library/venv.html
-
+# Python / Django
 venv/
 __pycache__/
 *.pyc
 db.sqlite3
 .env
-media/
 staticfiles/
+
+# Загруженные пользователями файлы (фото героев и т. п.)
+media/
+
+# Внешний архив фото и присланные макеты — локально, в git не попадают
+frontend/heroes-photos/
+museum_page/
+
+# Редакторы и ОС
 .vscode/
+.idea/
+.DS_Store
+
+# Сборка киоска (генерируется командой build_kiosk)
+dist/
