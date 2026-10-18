@@ -61,11 +61,7 @@
             <a href="{{ hero.get_absolute_url }}" class="hero-card">
               <div class="img-wrap">
                 {% with photo=hero.main_photo %}
-                  {% if photo %}
-                    <img src="{{ photo.image.url }}" alt="{{ hero.full_name }}" loading="lazy">
-                  {% else %}
-                    <img src="{% static 'ph/no-photo.jpg' %}" alt="{{ hero.full_name }}" loading="lazy">
-                  {% endif %}
+                  {% include 'includes/photo.html' with url=photo.thumb_url alt=hero.full_name %}
                 {% endwith %}
               </div>
               <div class="info">

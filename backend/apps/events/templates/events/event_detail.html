@@ -40,11 +40,9 @@
       </div>
     </header>
 
-    {% if event.photo %}
-      <div class="article-photo">
-        <img src="{{ event.photo.url }}" alt="{{ event.title }}">
-      </div>
-    {% endif %}
+    <div class="article-photo">
+      {% include 'includes/photo.html' with photo=event.photo alt=event.title %}
+    </div>
 
     {% if event.summary %}
       <p class="article-lead">{{ event.summary }}</p>
@@ -94,9 +92,7 @@
         {% for other in other_events %}
           <article class="info-card">
             <a href="{{ other.get_absolute_url }}" class="card-image">
-              {% if other.photo %}
-                <img src="{{ other.photo.url }}" alt="{{ other.title }}" loading="lazy">
-              {% endif %}
+              {% include 'includes/photo.html' with photo=other.photo alt=other.title %}
             </a>
             <div class="card-content">
               <p class="card-date">{{ other.starts_at|date:"j F Y, H:i" }}</p>

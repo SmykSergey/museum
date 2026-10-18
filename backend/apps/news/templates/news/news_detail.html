@@ -21,11 +21,9 @@
       <h1 class="article-title">{{ item.title }}</h1>
     </header>
 
-    {% if item.photo %}
-      <div class="article-photo">
-        <img src="{{ item.photo.url }}" alt="{{ item.title }}">
-      </div>
-    {% endif %}
+    <div class="article-photo">
+      {% include 'includes/photo.html' with photo=item.photo alt=item.title %}
+    </div>
 
     {% if item.summary %}
       <p class="article-lead">{{ item.summary }}</p>
@@ -47,9 +45,7 @@
         {% for other in other_news %}
           <article class="info-card">
             <a href="{{ other.get_absolute_url }}" class="card-image">
-              {% if other.photo %}
-                <img src="{{ other.photo.url }}" alt="{{ other.title }}" loading="lazy">
-              {% endif %}
+              {% include 'includes/photo.html' with photo=other.photo alt=other.title %}
             </a>
             <div class="card-content">
               <p class="card-date">{{ other.published_at|date:"j F Y" }}</p>

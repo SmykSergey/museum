@@ -12,11 +12,7 @@
 <main class="exhibit">
   <div class="exhibit-content">
     <div class="exhibit-photo">
-      {% if exhibit.image %}
-        <img src="{{ exhibit.image.url }}" alt="{{ exhibit.title }}">
-      {% else %}
-        <img src="{% static 'ph/no-photo.jpg' %}" alt="{{ exhibit.title }}">
-      {% endif %}
+      {% include 'includes/photo.html' with photo=exhibit.image alt=exhibit.title %}
     </div>
 
     <div class="exhibit-info">

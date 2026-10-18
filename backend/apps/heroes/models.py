@@ -29,6 +29,12 @@ class Branch(models.Model):
         return self.name
 
 
+def hero_thumb_path(instance, filename):
+    """media/heroes/<slug>/thumbs/<имя>.jpg"""
+    slug = instance.hero.slug or 'hero'
+    return 'heroes/%s/thumbs/%s' % (slug, filename)
+
+
 def hero_photo_path(instance, filename):
     """media/heroes/<slug героя>/<имя файла>"""
     slug = instance.hero.slug or 'hero'
@@ -134,6 +140,10 @@ class HeroPhoto(models.Model):
         Hero, verbose_name='герой', on_delete=models.CASCADE, related_name='photos',
     )
     image = models.ImageField('фото', upload_to=hero_photo_path)
+    thumb = models.ImageField(
+        'мініатюра', upload_to=hero_thumb_path, blank=True, editable=False,
+        help_text='Створюється автоматично: зменшена копія для карток списків.',
+    )
     caption = models.CharField('підпис', max_length=250, blank=True)
     order = models.PositiveSmallIntegerField(
         'порядок', default=0,
@@ -147,3 +157,24 @@ class HeroPhoto(models.Model):
 
     def __str__(self):
         return self.caption or ('Фото #%s' % self.pk)
+
+    def save(self, *args, **kwargs):
+        if self.image and not self.thumb:
+            self._build_thumb()
+        super().save(*args, **kwargs)
+
+    def _build_thumb(self):
+        """Делает миниатюру 400 px для карточек списков."""
+        from apps.core.images import make_thumbnail, thumbnail_filename
+
+        try:
+            content = make_thumbnail(self.image)
+        except Exception:  # noqa: BLE001 — битый файл не должен ломать сохранение
+            return
+
+        self.thumb.save(thumbnail_filename(self.image.name), content, save=False)
+
+    @property
+    def thumb_url(self):
+        """URL миниатюры, а если её нет — исходного фото."""
+        return self.thumb.url if self.thumb else self.image.url

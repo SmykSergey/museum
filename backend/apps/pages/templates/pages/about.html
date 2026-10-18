@@ -71,9 +71,7 @@
       {% for exhibit in exhibits %}
         <article class="expo-card">
           <div class="expo-card-image">
-            {% if exhibit.image %}
-              <img src="{{ exhibit.image.url }}" alt="{{ exhibit.title }}" loading="lazy">
-            {% endif %}
+            {% include 'includes/photo.html' with photo=exhibit.image alt=exhibit.title %}
           </div>
           <div class="expo-card-body">
             <h3 class="expo-card-title">{{ exhibit.title }}</h3>

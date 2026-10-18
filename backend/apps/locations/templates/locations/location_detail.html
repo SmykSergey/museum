@@ -18,11 +18,7 @@
 <main class="page-wrap">
   <div class="location-hero">
     <div class="location-hero-photo">
-      {% if location.photo %}
-        <img src="{{ location.photo.url }}" alt="{{ location.name }}">
-      {% else %}
-        <img src="{% static 'ph/no-photo.jpg' %}" alt="{{ location.name }}">
-      {% endif %}
+      {% include 'includes/photo.html' with photo=location.photo alt=location.name %}
     </div>
 
     <div>
@@ -67,9 +63,7 @@
         {% for event in upcoming_events %}
           <article class="info-card">
             <a href="{{ event.get_absolute_url }}" class="card-image">
-              {% if event.photo %}
-                <img src="{{ event.photo.url }}" alt="{{ event.title }}" loading="lazy">
-              {% endif %}
+              {% include 'includes/photo.html' with photo=event.photo alt=event.title %}
             </a>
             <div class="card-content">
               <p class="card-date">{{ event.starts_at|date:"j F Y, H:i" }}</p>
@@ -88,9 +82,7 @@
       <div class="locations-grid">
         {% for other in other_locations %}
           <a href="{{ other.get_absolute_url }}" class="location-card">
-            {% if other.photo %}
-              <img src="{{ other.photo.url }}" alt="{{ other.name }}" loading="lazy">
-            {% endif %}
+            {% include 'includes/photo.html' with photo=other.photo alt=other.name %}
             <p class="location-name">{{ other.name }}</p>
             {% if other.address %}
               <p class="location-address">{{ other.address }}</p>

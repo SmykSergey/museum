@@ -161,3 +161,58 @@ class HeroViewTests(TestCase):
         response = self.client.get(self.hidden.get_absolute_url())
 
         self.assertEqual(response.status_code, 404)
+
+
+class ThumbnailTests(TestCase):
+    """Миниатюры для карточек списков: 500 полноразмерных фото — слишком много."""
+
+    def setUp(self):
+        import tempfile
+        from pathlib import Path
+
+        from PIL import Image
+
+        self.tmp = Path(tempfile.mkdtemp())
+        self.media = self.tmp / 'media'
+        (self.media / 'heroes' / 'x').mkdir(parents=True)
+
+        self.override = self.settings(MEDIA_ROOT=str(self.media))
+        self.override.enable()
+        self.addCleanup(self.override.disable)
+
+        Image.new('RGB', (1200, 900), 'red').save(
+            self.media / 'heroes' / 'x' / '1.jpg', format='JPEG',
+        )
+
+        self.hero = Hero.objects.create(full_name='Тестовий Герой')
+        self.photo = HeroPhoto.objects.create(
+            hero=self.hero, image='heroes/x/1.jpg', order=0,
+        )
+
+    def test_thumb_created_on_save(self):
+        self.assertTrue(self.photo.thumb)
+        self.assertTrue(self.photo.thumb.name.endswith('.jpg'))
+
+    def test_thumb_is_smaller_than_original(self):
+        self.assertLess(self.photo.thumb.size, self.photo.image.size)
+
+    def test_thumb_fits_max_size(self):
+        from PIL import Image
+
+        with Image.open(self.photo.thumb.path) as img:
+            self.assertLessEqual(max(img.size), 400)
+
+    def test_thumb_url_falls_back_to_image(self):
+        self.assertTrue(self.photo.thumb_url.endswith('/thumbs/1.jpg'))
+
+        self.photo.thumb = ''
+        self.assertEqual(self.photo.thumb_url, self.photo.image.url)
+
+    def test_broken_image_does_not_break_save(self):
+        (self.media / 'heroes' / 'x' / 'broken.jpg').write_bytes(b'not an image')
+
+        photo = HeroPhoto.objects.create(
+            hero=self.hero, image='heroes/x/broken.jpg', order=1,
+        )
+
+        self.assertFalse(photo.thumb)

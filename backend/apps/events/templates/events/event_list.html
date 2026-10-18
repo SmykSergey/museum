@@ -21,9 +21,7 @@
     {% for event in events %}
       <article class="info-card">
         <a href="{{ event.get_absolute_url }}" class="card-image">
-          {% if event.photo %}
-            <img src="{{ event.photo.url }}" alt="{{ event.title }}" loading="lazy">
-          {% endif %}
+          {% include 'includes/photo.html' with photo=event.photo alt=event.title %}
         </a>
         <div class="card-content">
           <p class="card-date">{{ event.starts_at|date:"j F Y, H:i" }}</p>

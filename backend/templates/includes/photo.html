@@ -1,0 +1,1 @@
+{% load static %}{% if url %}<img src="{{ url }}" alt="{{ alt }}" loading="lazy">{% elif photo %}<img src="{{ photo.url }}" alt="{{ alt }}" loading="lazy">{% else %}<img src="{% static 'ph/no-photo.jpg' %}" alt="{{ alt }}" loading="lazy">{% endif %}

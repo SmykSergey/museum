@@ -19,9 +19,7 @@
     {% for item in news_list %}
       <article class="info-card">
         <a href="{{ item.get_absolute_url }}" class="card-image">
-          {% if item.photo %}
-            <img src="{{ item.photo.url }}" alt="{{ item.title }}" loading="lazy">
-          {% endif %}
+          {% include 'includes/photo.html' with photo=item.photo alt=item.title %}
         </a>
         <div class="card-content">
           <p class="card-date">{{ item.published_at|date:"j F Y" }}</p>

@@ -33,6 +33,7 @@ def hero_brief(hero, request=None):
         'district': district or None,
         'district_map': district_map_slug(district),
         'photo': _absolute(request, photo.image.url) if photo else None,
+        'photo_thumb': _absolute(request, photo.thumb_url) if photo else None,
         'detail_url': _absolute(request, hero.get_absolute_url()),
         'updated_at': hero.updated_at.isoformat(),
     }
