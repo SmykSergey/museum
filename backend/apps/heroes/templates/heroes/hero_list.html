@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}{% trans 'Герої не вмирають' %} – {% trans 'Одеський історико-краєзнавчий музей' %}{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/geroi.css' %}">
+{% endblock %}
+
+{% block body_class %}geroi-page{% endblock %}
+
+{% block content %}
+<section class="geroi-hero">
+  <div class="geroi-hero-inner">
+    <h1 class="geroi-title">{% trans 'Герої не вмирають!' %}<br>{% trans 'Одещина' %}</h1>
+
+    <form class="geroi-search" method="get" action="{% url 'heroes:list' %}" role="search">
+      <input type="text" id="searchInput" name="q" value="{{ query }}"
+             placeholder="{% trans 'Введіть прізвище' %}"
+             aria-label="{% trans 'Пошук за прізвищем' %}" autocomplete="off">
+      {% if query %}
+        <a class="search-reset" id="searchReset" href="{% url 'heroes:list' %}">{% trans 'скинути' %}</a>
+      {% endif %}
+      <button type="submit" aria-label="{% trans 'Знайти' %}">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      </button>
+    </form>
+  </div>
+</section>
+
+{% if letters %}
+  <nav class="alphabet-bar" id="alphabetBar" aria-label="{% trans 'Алфавітний покажчик' %}">
+    {% for letter in letters %}
+      <a class="letter-btn" href="#letter-{{ letter }}" data-letter="{{ letter }}">{{ letter }}</a>
+    {% endfor %}
+  </nav>
+{% endif %}
+
+<main class="geroi-list-wrap">
+  {% if query %}
+    <p class="geroi-count">
+      {% blocktrans count counter=found_count %}Знайдено {{ counter }} запис{% plural %}Знайдено {{ counter }} записів{% endblocktrans %}
+      {% trans 'за прізвищем' %} «{{ query }}»
+    </p>
+  {% endif %}
+
+  <div id="statusMsg" class="status-msg"{% if groups %} hidden{% endif %}>
+    {% if query %}
+      {% trans 'Нічого не знайдено. Спробуйте інше прізвище.' %}
+    {% else %}
+      {% trans 'Список героїв поки що порожній.' %}
+    {% endif %}
+  </div>
+
+  <div id="heroSections">
+    {% for group in groups %}
+      <section class="letter-section" id="letter-{{ group.letter }}" data-letter="{{ group.letter }}">
+        <h2 class="letter-heading">{{ group.letter }}</h2>
+        <div class="heroes-grid">
+          {% for hero in group.heroes %}
+            <a href="{{ hero.get_absolute_url }}" class="hero-card">
+              <div class="img-wrap">
+                {% with photo=hero.main_photo %}
+                  {% if photo %}
+                    <img src="{{ photo.image.url }}" alt="{{ hero.full_name }}" loading="lazy">
+                  {% else %}
+                    <img src="{% static 'ph/no-photo.jpg' %}" alt="{{ hero.full_name }}" loading="lazy">
+                  {% endif %}
+                {% endwith %}
+              </div>
+              <div class="info">
+                <div class="name">{{ hero.full_name }}</div>
+                <div class="branch">{{ hero.branch.name|default:'' }}</div>
+                <div class="dates">{{ hero.rank_dates }}</div>
+              </div>
+            </a>
+          {% endfor %}
+        </div>
+      </section>
+    {% endfor %}
+  </div>
+</main>
+{% endblock %}
+
+{% block footer %}
+<footer class="geroi-footer">
+  <p>{% trans "Пам'ятаємо кожного, хто віддав життя за Україну" %}</p>
+</footer>
+{% endblock %}

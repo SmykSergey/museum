@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}{{ hero.full_name }} – {% trans 'Одеський історико-краєзнавчий музей' %}{% endblock %}
+{% block meta_description %}{{ hero.full_name }} — {% trans 'Герої не вмирають. Одещина' %}.{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/geroi.css' %}">
+{% endblock %}
+
+{% block body_class %}geroi-page geroi-detail-body{% endblock %}
+
+{% block content %}
+<section class="geroi-hero geroi-hero--detail">
+  <div class="geroi-hero-inner">
+    <h1 class="geroi-title">{% trans 'Герої не вмирають!' %}<br>{% trans 'Одещина' %}</h1>
+    <a href="{% url 'heroes:list' %}" class="back-button">{% trans 'Повернутися назад' %}</a>
+  </div>
+</section>
+
+<main class="detail-wrap">
+  <div class="detail-card" id="detailCard">
+    <div class="detail-photo-col">
+      <div class="photo-frame">
+        {% with photo=hero.main_photo %}
+          {% if photo %}
+            <img id="heroPhoto" src="{{ photo.image.url }}" alt="{{ hero.full_name }}">
+          {% else %}
+            <img id="heroPhoto" src="{% static 'ph/no-photo.jpg' %}" alt="{{ hero.full_name }}">
+          {% endif %}
+        {% endwith %}
+      </div>
+    </div>
+    <div class="detail-bio-col">
+      <h2 id="heroName" class="hero-name">{{ hero.full_name }}</h2>
+      <div id="heroBranch" class="hero-branch">{{ hero.branch.name|default:'' }}</div>
+      <div id="heroDates" class="hero-dates">{{ hero.rank_dates }}</div>
+      <div id="heroDetails" class="hero-details">
+        {% for paragraph in paragraphs %}
+          <p>{{ paragraph }}</p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  {% if gallery %}
+    <div class="gallery-section" id="gallerySection">
+      <h3>{% trans "Галерея пам'яті" %}</h3>
+      <div class="gallery-grid" id="galleryGrid">
+        {% for photo in gallery %}
+          <div class="gallery-item">
+            <img src="{{ photo.image.url }}" alt="{{ hero.full_name }}" loading="lazy">
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+
+  {% if prev_hero and next_hero %}
+    <div class="detail-nav" id="detailNav">
+      <a href="{{ prev_hero.get_absolute_url }}" id="prevHero" class="nav-hero-btn nav-prev"
+         title="{{ prev_hero.full_name }}">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        {% trans 'Попередній' %}
+      </a>
+      <a href="{{ next_hero.get_absolute_url }}" id="nextHero" class="nav-hero-btn nav-next"
+         title="{{ next_hero.full_name }}">
+        {% trans 'Наступний' %}
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </a>
+    </div>
+  {% endif %}
+</main>
+
+<div class="lightbox" id="lightbox" hidden>
+  <button type="button" class="lightbox-close" id="lightboxClose" aria-label="{% trans 'Закрити' %}">
+    <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg>
+  </button>
+  <img id="lightboxImg" src="" alt="">
+</div>
+{% endblock %}
+
+{% block footer %}
+<footer class="geroi-footer">
+  <p>{% trans "Пам'ятаємо кожного, хто віддав життя за Україну" %}</p>
+</footer>
+{% endblock %}
